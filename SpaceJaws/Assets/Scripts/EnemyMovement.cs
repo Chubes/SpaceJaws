@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemyMovement : Movement {
     //stop time after getting shot
-    public float shotDelay = .25f;
+    public float shotDelay;
 
     void OnTriggerEnter2D(Collider2D otherCollider)
     {
@@ -20,10 +20,15 @@ public class EnemyMovement : Movement {
 
             Go();
         }
-        if (otherCollider.tag != "Enemy")
+        if (otherCollider.tag == "Shot")
         {
+            float delay = shotDelay; 
             Stop();
-           
+            while(delay > 0)
+            {
+                print(delay);
+                delay -= Time.deltaTime;
+            }
             Go();
 
         }
