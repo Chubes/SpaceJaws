@@ -5,8 +5,8 @@ public class Movement : MonoBehaviour {
     //designer variabbles
     //speed
     public Vector2 speed = new Vector2(10, 10);
-    private float speed_x = 0;
-    private float speed_y = 0;
+    protected float speed_x = 0;
+    protected float speed_y = 0;
   
    
     //Moving Direction
@@ -14,20 +14,26 @@ public class Movement : MonoBehaviour {
 
     //boundary y translation
     public float yTrans = 0;
-    private Vector2 movement;
-	// Use this for initialization
-	void Start () {
+    protected Vector2 movement;
+
+  
+    // Use this for initialization
+    void Start () {
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        movement = new Vector2(speed.x * direction.x, speed.y * direction.y);
+        
+            movement = new Vector2(speed.x * direction.x, speed.y * direction.y);
+       
         //kill object if out of bounds
-        if(transform.position.y >= 18.7f)
+        if (transform.position.y >= 18.7f)
         {
             Destroy(gameObject);
         }
+
+        
 	}
     void FixedUpdate(){
         GetComponent<Rigidbody2D>().velocity = movement;
@@ -50,6 +56,18 @@ public class Movement : MonoBehaviour {
     
     void OnCollisionEnter2D(Collision2D otherCollider)
     {
-       
+        if (otherCollider.gameObject.name.Contains("Boundary"))
+        {
+
+            Stop();
+            transform.Translate(0, yTrans, 0, Space.World);
+            this.direction.x *= -1;
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1;
+            transform.localScale = theScale;
+
+            Go();
+        }
+      
     }
 }
